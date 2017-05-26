@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    meta(name="viewport",content="initial-scale=1")
+    title 红包
+    link(rel='stylesheet', href='/users/detail.css')
+  body 
+
+ 
+    div.row
+      div.lucky
+        div.open  
+          div#open  
+    div.row
+
+      div.opened
+        div.line
+          img.face(src=headimgurl)
+        div.line 
+          h5.name #{name}
+        div.line 
+          p.title 红包金额
+        div.line 
+          p.money ￥#{changeMoney} 
+        div.line 
+          p#knowed 知道了
+        div.line 
+          p.totle 可领取红包总额 ￥ #{totalMoney}
+    script(src="/users/detail.js",type="text/javascript")

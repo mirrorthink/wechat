@@ -1,0 +1,147 @@
+#!/usr/bin/env node
+
+
+//初始化数据库模型，一定要在require('../app') 之前
+const mongoose = require('mongoose');
+const fs = require('fs');
+const join = require('path').join;
+const models = join(__dirname, '../models');
+fs.readdirSync(models)
+  .filter(file => ~file.search(/^[^\.].*\.js$/))
+  .forEach(file => { require(join(models, file)) });
+
+var debug = require('debug')('wechat:server');
+var http = require('http');
+var config = require('../config/config');
+//第三方微信api库
+var WechatAPI = require('wechat-api');
+var api = new WechatAPI(config.wechat.appID, config.wechat.appSecret);
+
+/**
+ * Create HTTP server.
+ */
+
+var app = require('../app');
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+
+var server = http.createServer(app);
+
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+function listen() {
+  if (app.get('env') === 'test') return;
+  app.listen(port);
+  console.log('Express app started on port ' + port);
+}
+
+var Menu = {
+    "button": [
+      {
+        "type": "view",
+        "name": "绑定账户",
+        "url": config.wechat.Website + "users"
+      },
+      {
+        "type": "click",
+        "name": "查询",
+        "key": "check"
+      },
+      {
+        "type": "click",
+        "name": "注销",
+        "key": "off"
+      }
+    ]
+  }
+cb = function (err, result) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(result)
+  }
+}
+//创建菜单 只需调用一次，调用后注释掉
+
+//api.createMenu(Menu, cb);
+//----------------------------------------------------------------------------测试设置模板消息
+//设置行业，添加模板 只需调用一次，调用后注释掉
+
+
+
+
+
+//数据库连接
+
+connect()
+  .on('error', console.log)
+  .on('disconnected', connect)
+  .once('open', listen);
+
+
+function connect() {
+  var options = { server: { socketOptions: { keepAlive: 1 } } };
+  return mongoose.connect(config.db, options).connection;
+}
+
+function listen() {
+  server.listen(port);
+  console.log('Express app started on port ' + port);
+}
