@@ -60,72 +60,79 @@ var handdlexlsxFile = function (file, req, res) {
     const workSheetsFromFile = xlsx.parse(file.path);
     var len = workSheetsFromFile[0].data.length;
 
-    async.parallel({
-        records: function (done) {   // 查询一页的记录
-            const workSheetsFromFile = xlsx.parse(file.path);
-            var len = workSheetsFromFile[0].data.length;
-            console.log(len)
-            var count = 0;
-            var flag = true;
-            for (let i = 1; i < len-1; i++) {
-                console.log(i);
-                (function (i) {
-                    let name = workSheetsFromFile[0].data[i][0];
-                    let money = workSheetsFromFile[0].data[i][2];
-                    let fund = workSheetsFromFile[0].data[i][3];
-                    var data = { fund: fund, money: money };
-                    UserModel.update({ name: name }, data, function (err, doc) {
-                        if (doc.nModified > 0) {
-                            count = count + 1
-                            console.log(count+'---------')
+    var count = 0;
+    var flag = true;
+    var promisearr=[];
+   // var promise1 = new Promise((outerResolve, outerReject) => {
+        for (let i = 1; i < len; i++) {
+          
 
-                            if (i == len-2 ) {
-                                console.log(count)
-                                console.log('doc.nModifiedi == len-1')
-                                let resule = {
-                                    'count': count,
-                                    'flag': flag,
-                                }
-                                done(null, resule)
-                            }
-                            UserModel.findOne({ name: name }, function (err, person) {
-                                if (err) {
+            let name = workSheetsFromFile[0].data[i][0];
+            let totalMoney = workSheetsFromFile[0].data[i][2];
+            let promise = new Promise((resolve, reject) => {
+                UserModel.findOne({ name: name }, function (err, person) {
+                    if (person) {
+                        console.log(person)
+
+                        let changeMoney = totalMoney - person.totalMoney;
+                        if (changeMoney != 0) {
+                            let data = { totalMoney: totalMoney, changeMoney: changeMoney, lastModifyTime: new Date() };
+                            UserModel.update({ name: name }, data, function (err, doc) {
+                                if (doc.nModified > 0) {
+                                    count = count + 1
+
+
+                                    resolve(count);
+                                    UserModel.findOne({ name: name }, function (err, person) {
+                                        if (person.openid) {
+                                            myWechatapi.sendTemplateMessage(person.name, person.openid, changeMoney, totalMoney, new Date())
+                                        }
+                                    });
+
                                 } else {
-                                    if (person.openid) {
-                                        myWechatapi.sendTemplateMessage(person.openid, money, fund)
-                                    }
+                                    console.log('resolve1')
+                                    resolve(count);
                                 }
-                            });
+                            })
                         } else {
-                            if (i == len-2 ) {
-                                console.log('elsei == len-1')
-                                let resule = {
-                                    'count': count,
-                                    'flag': flag,
-                                }
-                                done(null, resule)
-                            }
+                            console.log('resolve2')
+                            resolve(count);
                         }
 
-                    })
-                })(i);
-            }
-        }
-    }, function (err, results) {
-        console.log("don")
-        if (err) {
-            console.log(err)
-        } else {
-            if (results.records.flag) {
-                var state = {
-                    'state': "success",
-                    'count': results.records.count,
-                };
-                res.send(JSON.stringify(state));
-            }
+                    } else {
+                        console.log('resolve2')
+                        resolve(count);
+                    }
+
+
+                });
+            })
+              promisearr.push(promise)
+
+
+
         }
 
-    });
+  //  })
+  Promise.all(promisearr).then(()=>{
+       var state = {
+            'state': "success",
+            'count': count,
+        };
+    
+        res.send(JSON.stringify(state));
+  })
+
+  /*  promise1.then((data) => {
+        var state = {
+            'state': "success",
+            'count': data,
+        };
+        console.log('count' + data)
+        res.send(JSON.stringify(state));
+
+    })*/
+
 
 }
 

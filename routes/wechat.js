@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const UserModel = mongoose.model('User');
 var myWechatapi = require('../common/myWechatapi');
 //微信接口配置信息
+var config = require('../config/config');
 router.get('/', function (req, res, next) {
 
     var signature = req.query.signature;
@@ -110,39 +111,45 @@ var EventFunction = {
     },
     //打开某个网页
     VIEW: function (body, req, res) {
-        //根据需求，处理不同的业务
-        // console.log(body)
-        // res.redirect("/pages/home");
+        console.log('bind')
+        UserModel.findOne({ openid: body.FromUserName[0] }, function (err, person) {
+            if (person) {
+                sendMessage(body, res, '请勿重复绑定')
+                console.log('here')
+            } else {
+                // res.redirect('http://w16866w571.iask.in/users')
+                console.log('no')
+            }
+
+        })
     },
     //自动回复
     responseNews: function (body, req, res) {
-        //组装微信需要的json
-        var xml = {
-            xml: {
-                ToUserName: body.FromUserName,
-                FromUserName: body.ToUserName,
-                CreateTime: + new Date(),
-                MsgType: 'text',
-                Content: '编辑@+您想说的话，我们可以收到'
-            }
-        };
+
         var reciviMessage = body.Content[0]
         if (/^\@.*/.test(reciviMessage)) {
-            xml.xml.Content = '已经收到您的建议，会及时处理！'
-        } //将json转为xml
-        xml = builder.buildObject(xml);//发送给微信
-        res.send(xml);
+
+            sendMessage(body, res, '已经收到您的建议，会及时处理！')
+        } else {
+
+            sendMessage(body, res, ' 编辑@+您想说的话，我们可以收到')
+        }
+
     },
     CLICK: function (body, req, res) {
         console.log('CLICK')
         if (body.EventKey[0] == 'check') {
             console.log('check')
-            res.send('success')
+
             UserModel.findOne({ openid: body.FromUserName[0] }, function (err, person) {
                 if (person) {
-                    myWechatapi.sendTemplateMessage(person.name,body.FromUserName[0], person.changeMoney, person.totalMoney,person.lastModifyTime)
+                    res.send('success')
+                    console.log('yes')
+                    myWechatapi.sendTemplateMessage(person.name, body.FromUserName[0], person.changeMoney, person.totalMoney, person.lastModifyTime)
                 } else {
-                    myWechatapi.sendTemplateMessage('',body.FromUserName[0], 0, 0,'')
+            
+                    console.log('no')
+                    sendMessage(body, res, '请先绑定账户')
                 }
 
             })
@@ -156,8 +163,54 @@ var EventFunction = {
                 }
                 res.send('success')
             })
+        } else if (body.EventKey[0] == 'bind') {
+
+
+            console.log('bind')
+            UserModel.findOne({ openid: body.FromUserName[0] }, function (err, person) {
+                if (person) {
+                    sendMessage(body, res, '请勿重复绑定')
+                   
+                } else {
+                    var xml = {
+                        xml: {
+                            ToUserName: body.FromUserName,
+                            FromUserName: body.ToUserName,
+                            CreateTime: + new Date(),
+                            MsgType: 'news',
+                            ArticleCount: 1,
+                            Articles: {
+                                item: {
+                                    Title: '绑定账户',
+                                    Description: '点击阅读原文绑定账户 ',
+                                    PicUrl: config.wechat.Website + 'users/bg1.png',
+                                    Url: config.wechat.Website + 'users'
+                                }
+                            }
+                        }
+                    };
+                    //将json转为xml
+                    xml = builder.buildObject(xml);//发送给微信
+                    res.send(xml);
+                }
+
+            })
         }
     }
+}
+function sendMessage(body, res, Content) {
+    var xml = {
+        xml: {
+            ToUserName: body.FromUserName,
+            FromUserName: body.ToUserName,
+            CreateTime: + new Date(),
+            MsgType: 'text',
+            Content: Content
+        }
+    };
+    //将json转为xml
+    xml = builder.buildObject(xml);//发送给微信
+    res.send(xml);
 }
 
 

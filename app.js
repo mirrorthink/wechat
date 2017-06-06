@@ -13,15 +13,17 @@ var users = require('./routes/users');
 var wechat = require('./routes/wechat');
 //处理前端请求
 var backend = require('./routes/backend');
-
+var compress = require('compression');
 var app = express();
+
 
 
 
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
-//
+
+app.use(compress());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

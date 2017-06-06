@@ -23,7 +23,7 @@ var myWechatapi = require('../common/myWechatapi');
 router.get('/personinfo', function (req, res, next) {
 
 
-  var querydata = [{}, { name: true, openid: true, phoneNumber: true, idNumber: true, wechatNumber: true, totalMoney: true, changeMoney: true ,lastModifyTime: true }]
+  var querydata = [{}, { name: true, openid: true, phoneNumber: true, idNumber: true, wechatNumber: true, totalMoney: true, changeMoney: true, lastModifyTime: true }]
   var page = req.query.page || 1;
 
   dbHelper.pageQuery(page, 10, UserModel, '', querydata, {
@@ -84,7 +84,7 @@ router.post('/reg', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  req.session.logged_in=true;
+  req.session.logged_in = true;
   var postjson = JSON.parse(req.body.data);
   var data = { name: postjson.name, password: postjson.password };
   AdminModel.checkout(data, function (err, person) {
@@ -92,10 +92,10 @@ router.post('/login', function (req, res, next) {
       dbHelper.addBackendErrorLog(err);
     }
     if (person) {
-       res.setHeader('Set-Cookie', 'username='+postjson.name+';max-age=0');
-       req.session.logged_in = true;
-       req.session.save();
-       console.log(req.session)
+      res.setHeader('Set-Cookie', 'username=' + postjson.name + ';max-age=0');
+      req.session.logged_in = true;
+      req.session.save();
+      console.log(req.session)
       var state = { 'state': "success", 'name': postjson.name };
       return res.json(state)
     } else {
@@ -108,7 +108,7 @@ router.post('/login', function (req, res, next) {
 router.post('/modifyUser', function (req, res, next) {
   var postjson = JSON.parse(req.body.data);
 
-  var data = { changeMoney: postjson.changeMoney, totalMoney: postjson.totalMoney,lastModifyTime:new Date() };
+  var data = { changeMoney: postjson.changeMoney, totalMoney: postjson.totalMoney, lastModifyTime: new Date() };
   UserModel.where({ name: postjson.name }).update(data, function (err, doc) {
     if (err) {
       dbHelper.addBackendErrorLog(err);
@@ -117,7 +117,7 @@ router.post('/modifyUser', function (req, res, next) {
       console.log()
       var state = { 'state': "success" };
       //name, openid, changeMoney, totalMoney,lastModifyTime
-       myWechatapi.sendTemplateMessage(postjson.name,postjson.openid, postjson.changeMoney, postjson.totalMoney,new Date())
+      myWechatapi.sendTemplateMessage(postjson.name, postjson.openid, postjson.changeMoney, postjson.totalMoney, new Date())
       return res.json(state)
     }
   })
@@ -197,24 +197,53 @@ router.get('/loginfo', function (req, res, next) {
 })
 router.get('/search', function (req, res, next) {
   var search = req.query.search;
-  var type;
-  if (search.length == 18) {
-    UserModel.findOne({ idNumber: search }, function (err, person) {
+  var type
+  search.length == 11 ? (type = 'phoneNumber') : (type = 'name');
+  type == 'phoneNumber' ? (search = Number(search)) : (search = search);
+
+  // console.log(type)
+  if (type == 'phoneNumber') {
+    UserModel.findOne({ phoneNumber: search }, function (err, person) {
+
       if (err) {
         dbHelper.addBackendErrorLog(err);
       } else {
-        return res.json(state)
+        if (person) {
+          var state = {
+            'state': "success",
+            'person': person,
+          };
+          return res.json(state)
+        } else {
+          var state = {
+            'state': "false",
+          };
+          return res.json(state)
+        }
       }
     });
   } else {
     UserModel.findOne({ name: search }, function (err, person) {
+ 
       if (err) {
         dbHelper.addBackendErrorLog(err);
       } else {
-        return res.json(state)
+        if (person) {
+          var state = {
+            'state': "success",
+            'person': person,
+          };
+          return res.json(state)
+        } else {
+          var state = {
+            'state': "false",
+          };
+          return res.json(state)
+        }
       }
     });
   }
+
 })
 router.get('/searchAdmin', function (req, res, next) {
   var search = req.query.search;
@@ -223,7 +252,7 @@ router.get('/searchAdmin', function (req, res, next) {
     if (err) {
       dbHelper.addBackendErrorLog(err);
     } else {
-      return res.json(state);
+      return res.json(person);
     }
   });
 })
@@ -233,7 +262,7 @@ router.get('/JsConfig', function (req, res, next) {
   //TODO:change
   var param = {
     debug: false,
-    jsApiList: ['getLocation', 'openLocation'],
+    jsApiList: ['playVoice', 'pauseVoice','stopVoice','onVoicePlayEnd'],
     url: config.wechat.Website
   };
   api.getJsConfig(param, function (err, result) {

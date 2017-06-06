@@ -29,7 +29,7 @@ myWechatapi.sendTemplateMessage = function (name, openid, changeMoney, totalMone
                 body: mess
             }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                     // console.log(response)
+                      //console.log(response)
 
                 }
                 if (error) {

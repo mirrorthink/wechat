@@ -19,9 +19,8 @@ AdminSchema.statics.ifNameExit = function (name, cb) {
   return this.model('Admin').findOne({ name: name }, cb);
 }
 AdminSchema.statics.createWithEncryption = function (data, cb) {
-    var md5 = crypto.createHash('md5');
-    md5.update(content);
-  var password = md5.digest(data.password);  //加密后的值d
+   
+  var password =require('crypto').createHash('md5').update(data.password).digest('hex');
   return this.model('Admin').create({ name: data.name, password: password }, cb);
 }
 
@@ -29,7 +28,7 @@ AdminSchema.statics.createWithEncryption = function (data, cb) {
 AdminSchema.statics.checkout = function (data, cb) {
 var md5 = crypto.createHash('md5');
   md5.update(content);
-  var password = md5.digest(data.password);  //加密后的值d
+  var password =require('crypto').createHash('md5').update(data.password).digest('hex');
   var data = { name: data.name, password: password };
   this.model('Admin').findOne(data, cb)
 }

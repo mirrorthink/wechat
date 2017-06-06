@@ -48,7 +48,41 @@ body{
     height: 100vh;
     overflow-y: hidden;
     transition: all 0.2s ease;
-    position:fixed
+    position:fixed;
+
+}
+
+.holder{
+    display: flex;
+    justify-content: center;
+}
+.firstsight{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    top:0;
+    left: 0;
+    overflow: hidden;
+
+ 
+    /*  background: url('/users/bg1.png') no-repeat;
+  background-size:100% auto;
+    background-color: #24B39D;*/
+  
+}
+.bgimg1{
+    width: 100%;
+    min-height: 100vh;
+    position: absolute;
+    top:0;
+    left:0;
+    background: url('/users/bg1.png') no-repeat;
+    background-size:100% auto;
+}
+.secondsight{
+   height: 100vh;
+   width: 100%;
+   position: relative;
 }
 div.row{
     display: flex;
@@ -156,43 +190,12 @@ label{
     z-index:-1;
     background: #fff;
 }
-
-.firstsight{
-    width: 100%;
-    height: 100vh;
-    position: relative;
-    top:0;
-    left: 0;
-    overflow: hidden;
- 
-    /*  background: url('/users/bg1.png') no-repeat;
-  background-size:100% auto;
-    background-color: #24B39D;*/
-  
-}
-.bgimg{
-    width: 100%;
-    min-height: 100vh;
-    position: absolute;
-    top:0;
-    left:0;
-    background: url('/users/bg1.png') no-repeat;
-    background-size:100% auto;
-}
-.secondsight{
-   height: 100vh;
-   width: 100%;
-   position: relative;
-}
 .thirdsight{
    height: 100vh;
    width: 100%;
    position: relative;
 }
-.holder{
-    display: flex;
-    justify-content: center;
-}
+
 #reg{
     display: inline-block;
     width: 64%;
@@ -206,15 +209,12 @@ label{
     font-size: 1.21rem;
    
 }
-#word{
-	display: inline-block;
-    width: 64%;
-    padding: 0.8rem 0;
-	line-height:100%;
-    color: #24B39D;
-    background: #fff;
-    position: relative;
-     margin-top:71.3vh;
-    text-align: center;
-    font-size: 1.21rem;
+.bgimg3{
+    width: 100%;
+    min-height: 100vh;
+    position: absolute;
+    top:0;
+    left:0;
+    background: url('/users/bg7.jpg') no-repeat;
+    background-size:100% auto;
 }

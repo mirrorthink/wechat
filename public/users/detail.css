@@ -2,72 +2,88 @@
 
 @media only screen and (min-width: 319px) {
   html {
-    font-size: 14px!important
+    font-size: 12px!important
   }
+
 }
 
-@media only screen and (min-width: 374px) {
+@media only screen and (min-width: 359px) {
   html {
-    font-size: 16px!important
+    font-size: 14px!important
   }
+
 }
 
 @media only screen and (min-width: 413px) {
   html {
-    font-size: 18px!important
+    font-size: 14px!important
   }
 }
 
 @media only screen and (min-width: 479px) {
   html {
-    font-size: 20px!important
+    font-size: 14px!important
   }
 }
 
 @media only screen and (min-width: 561px) {
   html {
-    font-size: 21px!important
+    font-size: 19px!important
   }
 }
 
 @media only screen and (min-width: 641px) {
   html {
-    font-size: 22px!important
+    font-size: 21px!important
   }
 }
 *{
     margin: 0;
     padding:0;
     
-   color:#F3D9AA ;
+    color:#F3D9AA ;
     letter-spacing: 2px;
-    font-size:1rem;
+  
 }
 body{
-    background: rgba(000, 000, 000, 0.4)
+    /*background: rgba(000, 000, 000, 0.4)*/
 }
-.row{
+.firtsingt{
     width: 100%;
     height: 100vh;;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: url('/users/bg5.jpg') no-repeat;
+    background-size:100% auto;
 }
 .lucky{
     width:  23.2rem;
     height: 32rem;
     position: relative;
     overflow: hidden;
-    background: url('/users/bg4.png') no-repeat;
-    background-size:100% 100%;
+    margin-top: 2rem;
+  /*  background: url('/users/bg4.png') no-repeat;
+    background-size:100% 100%;*/
+}
+.secondsingt{
+    width: 100%;
+    height: 100vh;;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/users/bg6.jpg') no-repeat;
+    background-size:100% auto;
 }
 .opened{
-    width:  21.2rem;
+    width:  23.2rem;
     height: 32rem;
     position: relative;
-    background:#d94f35;
+    margin-top: 2rem;
+   /* background:#d94f35;
     background: url('/users/bg3.png') no-repeat;
-    background-size:100% 100%;
+    background-size:100% 100%;*/
+
 }
 
 .open{
@@ -99,7 +115,7 @@ body{
 img.face{
     width: 3.43rem;
     height: 3.43rem;
-    margin-top: 2.29rem;
+    margin-top: 4.0rem;
     border-radius: 50%;
     margin-bottom: 0.57rem;
 
@@ -139,7 +155,7 @@ h5.name{
     text-align: center;
     font-size: 1.5rem;
     font-weight: lighter;
-    margin-bottom: 2.79rem;
+    margin-bottom: 2.5rem;
 }
 .totle{
     font-weight: lighter;
@@ -153,189 +169,3 @@ h5.name{
     background-size:100% 100%;
 }
 
-/*
-
-@media only screen and (min-width: 1026px) {
-  html {
-    font-size: 10px!important
-  }
-}
-
-@media only screen and (max-width: 1025px) {
-  html {
-    font-size: 30px!important
-  }
-}
-*{
-    margin: 0;
-    padding:0;
-    color:#F3D9AA ;
-    letter-spacing: 2px;
-    font-size: 1.5rem;
-}
-
-
-
-body{
-    background: rgba(000, 000, 000, 0.4)
-}
-.row{
-    width: 100%;
-    height: 100vh;;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.lucky{
-    width:  50vh;
-    height: 75vh;
-    background:#e8684f;
-    position: relative;
-    overflow: hidden;
-    border-radius: 1rem;
-}
-.opened{
-    width:  50vh;
-    height: 75vh;
-    position: relative;
-    background:#d94f35;
-    border-radius: 1rem;
-    overflow: hidden;
-    
-}
-.test{
-    background: #fff;
-    border-radius: 50%;
-    position: absolute;
-    left: -12.5vh;
-    top:0;
-    width:  75vh;
-    height: 60vh;
-    background:#e8684f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-}
-.bottom{
-    background: #d94f35;
-    position: absolute;
-    bottom: 0;
-    height: 25vh;
-    width: 100%;
-}
-#open{
-    position: absolute;
-    top:0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-}
-span.icon{
-    display: inline-block;
-    z-index: 3;
-    background: #CCAE76;
-    font-size: 5rem;
-    position:relative;
-    color:#000;
-    padding: 0.75rem 1.5rem;
-    border-radius: 50%;
-}
-.top{
-    display: flex;
-    justify-content: flex-end;
-}
-.ceontainer{
-    width: 1.75rem;
-    height:  1.75rem;
-    margin:0.5rem;
-    position: relative;
-}
-.close{
-    height: 100%;
-    width: 100%;
-}
-span.cover{
-    position: absolute;
-    top:0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(199,184,151,0.5);
-    border-radius: 50%;
-
-}
-.middle{
-    position: relative;
-    z-index: 99;
-    width: 100%;
-}
-h5{
-   color:#F3D9AA;
-   font-size: 2.25rem;
-   text-align: center;
-   font-family: Arial, Helvetica, sans-serif;
-   font-weight: normal;
-
-}
-.header{
-    position: absolute;
-   top:-77vh;
-    left: -50%;
-    width: 200%;
-    height: 80vh;
-    border-radius: 50%;
-    background: #D9B97E;
-
-}
-
-body{
-    width: 100%;
-    height: 100vh;
-    overflow-y: hidden;
-    position:fixed
-}
-img.face{
-    width: 7.5rem;
-    height: 7.5rem;
-    margin-top: 6vh;
-    border-radius: 50%;
-
-}
-.line{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1vh;
-   
-}
-h5.name{
-    font-size: 1.25rem;
-    margin-bottom: 2vh;
-}
-.title{
-  line-height: 300%;
-  border-top: 1px solid #F3D9AA ;
-  width: 80%;
-  text-align: center;
-}
-.money{
-  font-size: 3rem;
-  margin-bottom: 7vh;
-
-}
-#knowed{
-    width: 50%;
-    border: 1px solid #F3D9AA ;
-    text-align: center;
-    padding: 0.8rem;
-    font-size: 2rem;
-    bottom: 17vh;
-    margin-bottom: 5vh;
-}
-.totle{
-    bottom: 6vh;
-    font-weight: lighter;
-}
-*/

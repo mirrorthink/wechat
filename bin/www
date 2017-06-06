@@ -13,6 +13,7 @@ fs.readdirSync(models)
 var debug = require('debug')('wechat:server');
 var http = require('http');
 var config = require('../config/config');
+//
 //第三方微信api库
 var WechatAPI = require('wechat-api');
 var api = new WechatAPI(config.wechat.appID, config.wechat.appSecret);
@@ -95,9 +96,9 @@ function listen() {
 var Menu = {
     "button": [
       {
-        "type": "view",
+        "type": "click",
         "name": "绑定账户",
-        "url": config.wechat.Website + "users"
+        "key": "bind"
       },
       {
         "type": "click",
@@ -138,6 +139,7 @@ connect()
 
 function connect() {
   var options = { server: { socketOptions: { keepAlive: 1 } } };
+   mongoose.Promise = global.Promise;  
   return mongoose.connect(config.db, options).connection;
 }
 

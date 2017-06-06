@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1">
+    <title>个人信息绑定</title>
+      <!-- <link rel="stylesheet" href="/users/login.css">-->
+      <link rel="stylesheet" href="./login.css">
+</head>
+
+<body>
+    <div class="firstsight">
+        <div class="bgimg"></div>
+        <div class="holder">
+            <div id="reg">注册账号</div>
+        </div>
+    </div>
+    <div class="secondsight">
+        <div class="row"><img class="face"></div>
+        <div class="row">
+            <p class="name"></p>
+        </div>
+        <div class="form">
+            <form id="loginform">
+                <div class="line"><label for="name">真实姓名 </label><input name="name" id="name" placeholder="请输入真实姓名"><input name="openid" type="hidden">
+                    <input
+                        name="headimgurl" type="hidden"><input name="url" type="hidden" value="http://w16866w571.iask.in/users/bind">
+                        <div class="clear"><img id="close" src="/users/close.png"></div>
+                </div>
+                <div class="lastline"><label for="phone">手机号码</label><input name="phone" id="phone" placeholder="请输入手机号" type="number">
+                    <div class="clear"></div>
+                </div>
+                <div id="info" class="info"></div>
+                <div class="line">
+                    <div id="bind">绑定</div>
+                </div>
+                <div id="nameinfo" class="info"></div>
+                <div id="phoneinfo" class="info"></div>
+            </form>
+        </div>
+    </div>
+    <div class="thirdsight">
+        <div class="bgimg"></div>
+        <div class="holder"> <span id="word">绑定成功          </span></div>
+    </div>
+   <!-- <script src="/users/login.js" type="text/javascript"></script>-->
+   <script src="./login.js" type="text/javascript"></script>
+</body>
+
+</html>
